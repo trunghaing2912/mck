@@ -61,6 +61,8 @@ const $ = (s) => document.querySelector(s),
 const audio = $("#audio"),
   video = $("#video"),
   grid = $("#mediaGrid");
+const playSvg = '<svg class="control-icon play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>';
+const pauseSvg = '<svg class="control-icon pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM14 5h4v14h-4z" /></svg>';
 let current = null,
   view = "all",
   shuffle = false,
@@ -109,7 +111,9 @@ function updateNow() {
   $("#nowMeta").textContent = "MCK · FLAC Lossless";
   $("#favoriteNow").textContent = favorites.has(current.id) ? "♥" : "♡";
   document.body.classList.toggle("playing", !audio.paused);
-  $("#play").textContent = audio.paused ? "▶" : "Ⅱ";
+  $("#play").innerHTML = audio.paused ? playSvg : pauseSvg;
+  $("#play").setAttribute("aria-label", audio.paused ? "Phát" : "Tạm dừng");
+  $("#play").setAttribute("title", audio.paused ? "Phát" : "Tạm dừng");
 }
 function audioList() {
   return media.filter((m) => m.type === "audio");

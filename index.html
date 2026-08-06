@@ -94,9 +94,15 @@
       <div class="transport">
         <div class="controls">
           <button id="shuffle" aria-label="Trộn">⌘</button
-          ><button id="prev" aria-label="Bài trước">◀</button
-          ><button id="play" class="play" aria-label="Phát">▶</button
-          ><button id="next" aria-label="Bài sau">▶</button
+          ><button id="prev" aria-label="Bài trước" title="Bài trước">
+            <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 5 8 12l11 7V5Z" /></svg>
+          </button
+          ><button id="play" class="play" aria-label="Phát" title="Phát">
+            <svg class="control-icon play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
+          </button
+          ><button id="next" aria-label="Bài sau" title="Bài sau">
+            <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 5l11 7-11 7V5Z" /></svg>
+          </button
           ><button id="repeat" aria-label="Lặp">↻</button>
         </div>
         <div class="timeline">
