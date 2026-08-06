@@ -8,12 +8,32 @@
   overflow: visible;
   pointer-events: none;
 }
+.controls button,
+.card-play,
+.primary {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
 .controls .play .control-icon {
   width: 19px;
   height: 19px;
 }
 .controls .play .play-icon {
   transform: translateX(1px);
+}
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.primary .control-icon {
+  width: 16px;
+  height: 16px;
+}
+.card-play .control-icon {
+  width: 16px;
+  height: 16px;
 }
 .library {
   padding-bottom: 0;
