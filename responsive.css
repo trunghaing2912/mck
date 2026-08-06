@@ -8,6 +8,14 @@
   overflow: visible;
   pointer-events: none;
 }
+.nav-icon {
+  display: block;
+  width: 19px;
+  height: 19px;
+  margin: auto;
+  fill: currentColor;
+  pointer-events: none;
+}
 .controls button,
 .card-play,
 .primary {
