@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0b0b0c" />
+    <title>MCK — Music & Visuals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="responsive.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-a"></div>
+    <div class="ambient ambient-b"></div>
+    <aside class="sidebar">
+      <a class="brand" href="#" aria-label="Trang chủ"
+        ><span>M</span><b>MCK</b></a
+      >
+      <nav>
+        <button class="nav-item active" data-view="all">
+          <span>⌂</span> Khám phá
+        </button>
+        <button class="nav-item" data-view="audio">
+          <span>♫</span> Âm nhạc
+        </button>
+        <button class="nav-item" data-view="video"><span>▶</span> Video</button>
+        <button class="nav-item" data-view="favorite">
+          <span>♡</span> Yêu thích
+        </button>
+      </nav>
+      <div class="side-note">
+        <span>LOSSLESS AUDIO</span><strong>FLAC</strong>
+        <p>Chất âm nguyên bản, không nén mất dữ liệu.</p>
+      </div>
+    </aside>
+
+    <main>
+      <header>
+        <button class="menu-btn" aria-label="Mở menu">☰</button>
+        <label class="search"
+          ><span>⌕</span
+          ><input id="search" type="search" placeholder="Tìm bài hát, video..."
+        /></label>
+        <a
+          class="drive-link"
+          href="https://drive.google.com/drive/folders/1ZOWvyl-HjtHA3LlJl7aQi1B0vhRkA-Q4"
+          target="_blank"
+          rel="noreferrer"
+          >Google Drive ↗</a
+        >
+      </header>
+
+      <section id="videoStage" class="video-stage" hidden>
+        <div class="video-frame">
+          <video id="video" controls playsinline></video>
+          <div class="video-actions">
+            <div><span class="eyebrow">NOW PLAYING</span><strong id="videoTitle"></strong></div>
+            <button id="fullscreenVideo" class="video-action" type="button">⛶ Toàn màn hình</button>
+            <button id="closeVideo" class="video-action close-inline" type="button" aria-label="Đóng video">×</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">THE COLLECTION · 2026</span>
+          <h1>Nghe điều<br /><i>không thể nói.</i></h1>
+          <p>Trọn bộ âm thanh lossless và những thước phim từ MCK.</p>
+          <button id="playFeatured" class="primary">
+            ▶ &nbsp; Phát từ đầu
+          </button>
+        </div>
+        <div class="hero-art">
+          <div class="disc">
+            <div class="disc-label">MCK<br /><small>99%</small></div>
+          </div>
+          <div class="scribble">RAW<br />FEELINGS</div>
+        </div>
+      </section>
+
+      <section class="library">
+        <div class="section-head">
+          <div>
+            <span class="eyebrow">BỘ SƯU TẬP</span>
+            <h2 id="sectionTitle">Tất cả tác phẩm</h2>
+          </div>
+          <div class="tabs">
+            <button class="tab active" data-view="all">Tất cả</button
+            ><button class="tab" data-view="audio">Nhạc</button
+            ><button class="tab" data-view="video">Video</button>
+          </div>
+        </div>
+        <div id="mediaGrid" class="media-grid" aria-live="polite"></div>
+        <div id="empty" class="empty" hidden>
+          Không tìm thấy tác phẩm phù hợp.
+        </div>
+      </section>
+    </main>
+
+    <footer class="player">
+      <div class="now">
+        <div class="mini-cover"><span>99</span></div>
+        <div>
+          <strong id="nowTitle">Chọn một bài hát</strong
+          ><small id="nowMeta">MCK · FLAC Lossless</small>
+        </div>
+        <button id="favoriteNow" class="icon-btn" aria-label="Yêu thích">
+          ♡
+        </button>
+      </div>
+      <div class="transport">
+        <div class="controls">
+          <button id="shuffle" aria-label="Trộn">⌘</button
+          ><button id="prev" aria-label="Bài trước">◀</button
+          ><button id="play" class="play" aria-label="Phát">▶</button
+          ><button id="next" aria-label="Bài sau">▶</button
+          ><button id="repeat" aria-label="Lặp">↻</button>
+        </div>
+        <div class="timeline">
+          <span id="currentTime">0:00</span
+          ><input id="seek" type="range" min="0" max="100" value="0" /><span
+            id="duration"
+            >0:00</span
+          >
+        </div>
+      </div>
+      <div class="volume">
+        <span>♬</span
+        ><input
+          id="volume"
+          type="range"
+          min="0"
+          max="1"
+          step="0.01"
+          value="0.8"
+        /><span class="quality">FLAC<br /><b>LOSSLESS</b></span>
+      </div>
+      <audio id="audio" preload="metadata"></audio>
+    </footer>
+    <div id="toast" class="toast"></div>
+    <script src="app.js"></script>
+  </body>
+</html>
