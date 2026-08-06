@@ -17,28 +17,6 @@
   <body>
     <div class="ambient ambient-a"></div>
     <div class="ambient ambient-b"></div>
-    <aside class="sidebar">
-      <a class="brand" href="#" aria-label="Trang chủ"
-        ><span>M</span><b>MCK</b></a
-      >
-      <nav>
-        <button class="nav-item active" data-view="all">
-          <span>⌂</span> Khám phá
-        </button>
-        <button class="nav-item" data-view="audio">
-          <span>♫</span> Âm nhạc
-        </button>
-        <button class="nav-item" data-view="video"><span>▶</span> Video</button>
-        <button class="nav-item" data-view="favorite">
-          <span>♡</span> Yêu thích
-        </button>
-      </nav>
-      <div class="side-note">
-        <span>LOSSLESS AUDIO</span><strong>FLAC</strong>
-        <p>Chất âm nguyên bản, không nén mất dữ liệu.</p>
-      </div>
-    </aside>
-
     <main>
       <header>
         <button class="menu-btn" aria-label="Mở menu">☰</button>
@@ -141,6 +119,20 @@
         /><span class="quality">FLAC<br /><b>LOSSLESS</b></span>
       </div>
       <audio id="audio" preload="metadata"></audio>
+    </footer>
+    <footer class="sidebar site-footer" aria-label="Điều hướng chính">
+      <nav>
+        <button class="nav-item active" data-view="all">
+          <span>⌂</span> Khám phá
+        </button>
+        <button class="nav-item" data-view="audio">
+          <span>♫</span> Âm nhạc
+        </button>
+        <button class="nav-item" data-view="video"><span>▶</span> Video</button>
+        <button class="nav-item" data-view="favorite">
+          <span>♡</span> Yêu thích
+        </button>
+      </nav>
     </footer>
     <div id="toast" class="toast"></div>
     <script src="app.js"></script>
