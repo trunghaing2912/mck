@@ -1,0 +1,14 @@
+{
+  "name": "mck-music-visuals",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node --env-file-if-exists=.env.local server.mjs",
+    "start": "node --env-file-if-exists=.env.local server.mjs",
+    "check": "node --check app.js && node --check server.mjs && node --check api/media/[id].mjs && node --check api/media/[id].js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

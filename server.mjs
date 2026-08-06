@@ -6,7 +6,9 @@ import { Readable } from 'node:stream';
 const ROOT = import.meta.dirname;
 const appSource = readFileSync(join(ROOT, 'app.js'), 'utf8');
 const allowedIds = new Set([...appSource.matchAll(/\["([\w-]{10,})",/g)].map(m => m[1]));
-const upstreamUrl = id => `https://drive.usercontent.google.com/download?export=download&confirm=t&id=${id}`;
+const driveOrigin = (process.env.GOOGLE_DRIVE_DOWNLOAD_ORIGIN || 'https://drive.usercontent.google.com').replace(/\/$/, '');
+const cacheSeconds = Number.parseInt(process.env.MEDIA_CACHE_SECONDS || '3600', 10);
+const upstreamUrl = id => `${driveOrigin}/download?export=download&confirm=t&id=${id}`;
 const mime = {'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.md':'text/markdown; charset=utf-8'};
 
 async function proxyMedia(req, res, id) {
@@ -20,7 +22,7 @@ async function proxyMedia(req, res, id) {
       const value = upstream.headers.get(name); if (value) output[name] = value;
     }
     output['access-control-allow-origin'] = '*';
-    output['cache-control'] = 'public, max-age=3600';
+    output['cache-control'] = `public, max-age=${cacheSeconds}`;
     res.writeHead(upstream.status, output);
     if (req.method === 'HEAD' || !upstream.body) return res.end();
     Readable.fromWeb(upstream.body).on('error', () => res.destroy()).pipe(res);
@@ -44,7 +46,9 @@ const server = http.createServer(async (req, res) => {
   } catch { res.writeHead(404); res.end('Not found'); }
 });
 
-server.listen(4173, '127.0.0.1', () => {
-  console.log('MCK player: http://localhost:4173');
+const port = Number.parseInt(process.env.PORT || '4173', 10);
+const host = process.env.HOST || '127.0.0.1';
+server.listen(port, host, () => {
+  console.log(`MCK player: http://${host}:${port}`);
   console.log(`Media ready: ${allowedIds.size} files`);
 });
