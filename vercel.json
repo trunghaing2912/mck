@@ -3,7 +3,7 @@
   "cleanUrls": true,
   "trailingSlash": false,
   "functions": {
-    "api/**/*.js": {
+    "api/**/*.mjs": {
       "maxDuration": 60
     }
   }
