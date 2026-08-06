@@ -1,3 +1,7 @@
+.toast {
+  top: 82px;
+  bottom: auto;
+}
 .control-icon {
   display: block;
   width: 18px;
@@ -146,6 +150,10 @@ body {
 @media (min-width: 1024px) {
   body {
     --player: 112px;
+  }
+  .toast {
+    top: 86px;
+    bottom: auto;
   }
   main {
     width: min(calc(100% - 64px), 1180px);

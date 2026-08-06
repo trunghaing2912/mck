@@ -61,8 +61,10 @@ const $ = (s) => document.querySelector(s),
 const audio = $("#audio"),
   video = $("#video"),
   grid = $("#mediaGrid");
-const playSvg = '<svg class="control-icon play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>';
-const pauseSvg = '<svg class="control-icon pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM14 5h4v14h-4z" /></svg>';
+const playSvg =
+  '<svg class="control-icon play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>';
+const pauseSvg =
+  '<svg class="control-icon pause-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 5h4v14H7zM14 5h4v14h-4z" /></svg>';
 let current = null,
   view = "all",
   shuffle = false,
@@ -242,22 +244,28 @@ $("#fullscreenVideo").onclick = async () => {
   try {
     if (video.requestFullscreen) await video.requestFullscreen();
     else if (video.webkitEnterFullscreen) video.webkitEnterFullscreen();
-  } catch { toast("Thiết bị không cho phép mở toàn màn hình."); }
+  } catch {
+    toast("Thiết bị không cho phép mở toàn màn hình.");
+  }
 };
 $(".menu-btn").onclick = () => $(".sidebar").classList.toggle("open");
 let lastScrollY = window.scrollY;
 let scrollTicking = false;
-window.addEventListener("scroll", () => {
-  if (scrollTicking) return;
-  scrollTicking = true;
-  requestAnimationFrame(() => {
-    const y = window.scrollY;
-    const goingDown = y > lastScrollY && y > 100;
-    document.body.classList.toggle("bars-hidden", goingDown);
-    lastScrollY = Math.max(0, y);
-    scrollTicking = false;
-  });
-}, { passive: true });
+window.addEventListener(
+  "scroll",
+  () => {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(() => {
+      const y = window.scrollY;
+      const goingDown = y > lastScrollY && y > 100;
+      document.body.classList.toggle("bars-hidden", goingDown);
+      lastScrollY = Math.max(0, y);
+      scrollTicking = false;
+    });
+  },
+  { passive: true },
+);
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") closeVideo();
   if (e.code === "Space" && !/INPUT/.test(e.target.tagName)) {
