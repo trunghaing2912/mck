@@ -2,6 +2,7 @@
 // Route media through the local server so redirects, CORS and byte-range
 // requests behave consistently across desktop and mobile browsers.
 const DRIVE = "/api/media/";
+const PLAYBACK_SESSION_KEY = "mck-playback-session";
 let media = [];
 async function loadMedia() {
   const response = await fetch("/media.json");
@@ -15,6 +16,7 @@ async function loadMedia() {
     url: DRIVE + id,
     no: String(i + 1).padStart(2, "0"),
   }));
+  restorePlaybackSession();
   render();
 }
 const $ = (s) => document.querySelector(s),
@@ -30,6 +32,7 @@ let current = null,
   view = "all",
   shuffle = false,
   repeat = false;
+let lastPersistedSecond = -1;
 let favorites = new Set(
   JSON.parse(localStorage.getItem("mck-favorites") || "[]"),
 );
@@ -65,6 +68,8 @@ function playItem(m) {
   }
   current = m;
   audio.src = m.url;
+  lastPersistedSecond = -1;
+  persistPlaybackSession(0, true);
   audio.play().catch(() => toast("Trình duyệt không thể phát file này."));
   updateNow();
   render();
@@ -132,6 +137,48 @@ function fmt(s) {
   if (!Number.isFinite(s)) return "0:00";
   return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 }
+
+// Restore the selected track and paused position without triggering autoplay.
+function restorePlaybackSession() {
+  let saved;
+  try {
+    saved = JSON.parse(localStorage.getItem(PLAYBACK_SESSION_KEY) || "null");
+  } catch {
+    localStorage.removeItem(PLAYBACK_SESSION_KEY);
+    return;
+  }
+  if (!saved?.id) return;
+  const restoredTrack = media.find(
+    (item) => item.id === saved.id && item.type === "audio",
+  );
+  if (!restoredTrack) return;
+  current = restoredTrack;
+  audio.src = restoredTrack.url;
+  const restoredTime = Math.max(0, Number(saved.time) || 0);
+  const seekToSavedTime = () => {
+    if (restoredTime > 0) {
+      audio.currentTime = Math.min(restoredTime, audio.duration || restoredTime);
+    }
+    $("#currentTime").textContent = fmt(restoredTime);
+    updateNow();
+  };
+  if (audio.readyState >= 1) seekToSavedTime();
+  else audio.addEventListener("loadedmetadata", seekToSavedTime, { once: true });
+  updateNow();
+}
+
+function persistPlaybackSession(time = audio.currentTime, force = false) {
+  if (!current || current.type !== "audio") return;
+  const safeTime = Math.max(0, Number(time) || 0);
+  const currentSecond = Math.floor(safeTime);
+  if (!force && currentSecond === lastPersistedSecond) return;
+  lastPersistedSecond = currentSecond;
+  localStorage.setItem(
+    PLAYBACK_SESSION_KEY,
+    JSON.stringify({ id: current.id, time: safeTime }),
+  );
+}
+
 let toastTimer;
 function toast(msg) {
   $("#toast").textContent = msg;
@@ -176,7 +223,10 @@ $("#volume").oninput = (e) => {
 audio.volume = localStorage.getItem("mck-volume") ?? 0.8;
 $("#volume").value = audio.volume;
 audio.addEventListener("play", updateNow);
-audio.addEventListener("pause", updateNow);
+audio.addEventListener("pause", () => {
+  persistPlaybackSession(audio.currentTime, true);
+  updateNow();
+});
 audio.addEventListener("waiting", () => toast("Đang tải âm thanh lossless..."));
 audio.addEventListener("error", () => {
   const messages = {
@@ -196,6 +246,7 @@ audio.addEventListener("timeupdate", () => {
   $("#seek").value = audio.duration
     ? (audio.currentTime / audio.duration) * 100
     : 0;
+  persistPlaybackSession();
 });
 $("#seek").oninput = (e) => {
   if (audio.duration)
@@ -235,6 +286,9 @@ document.addEventListener("keydown", (e) => {
     $("#play").click();
   }
 });
+window.addEventListener("pagehide", () =>
+  persistPlaybackSession(audio.currentTime, true),
+);
 
 // Theme: follow the device on first visit, then remember the user's choice.
 const themeToggle = $("#themeToggle");

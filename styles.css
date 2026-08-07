@@ -1508,6 +1508,10 @@ header::before {
    use different placements on compact and desktop layouts.
    ============================================================ */
 html[data-theme="dark"] {
+  --nav-active-bg: #202520;
+  --card-play-bg: #171b17;
+  --card-play-fg: #f0f2ea;
+  --search-surface: #272c27;
   color-scheme: dark;
 }
 html[data-theme="light"] {
@@ -1521,6 +1525,10 @@ html[data-theme="light"] {
   --lime: #527b13;
   --acid: #527b13;
   --orange: #527b13;
+  --nav-active-bg: #dfe7d8;
+  --card-play-bg: #eef2eb;
+  --card-play-fg: #263026;
+  --search-surface: #e4e9e1;
   color-scheme: light;
 }
 
@@ -1555,6 +1563,22 @@ html[data-theme="light"] {
 }
 .theme-toggle-label {
   display: none;
+}
+
+.card-play {
+  color: var(--card-play-fg);
+  background: var(--card-play-bg);
+  border-color: var(--line);
+}
+.card.active .card-play,
+.card-play:hover {
+  color: #11150e;
+  background: var(--acid);
+  border-color: var(--acid);
+}
+.nav-item.active {
+  color: var(--acid);
+  background: var(--nav-active-bg);
 }
 
 /* Mobile: favorite sits at the right edge, immediately before Play. */
@@ -1628,6 +1652,21 @@ html[data-theme="light"] .card-play:hover {
   }
   .theme-toggle-label {
     display: inline;
+  }
+  .desktop-nav .nav-item.active {
+    color: var(--ink);
+    background: var(--nav-active-bg);
+  }
+  .search {
+    color: var(--ink);
+    background: var(--search-surface);
+  }
+  .search input {
+    color: var(--ink);
+  }
+  .search input::placeholder {
+    color: var(--muted);
+    opacity: 1;
   }
   /* Desktop: favorite anchors top-right; Play anchors bottom-right of artwork. */
   .card .heart {
