@@ -1,61 +1,22 @@
+
 // Route media through the local server so redirects, CORS and byte-range
 // requests behave consistently across desktop and mobile browsers.
 const DRIVE = "/api/media/";
-const raw = [
-  ["1reQCapHuk6snmGuh-UsLL1zawSAX7qsK", "01. Elegie.flac"],
-  ["1g4cuEub4D2YI6Sx7Yiy40klszOrQqW4r", "02. IDK.flac"],
-  ["1CfH578Cc-HVM_-sZ1vkhH6C5mR1FidsM", "03. Wtf Bby I'm Lit.flac"],
-  ["1F2wZ7Pr6Tnbs-3l2RsygMtlG7gCI4-sm", "04. Anh Không Muốn Nó Dễ Dàng.flac"],
-  ["1tEMh5fFgtNSVYF6mlCBtqwe9ERMJ9HJ2", "05. Baby (feat. marzuz).flac"],
-  ["1p_F8wIPd8zC6U1SN3sEEIZUN6sESazzD", "06. Yêu Anh Giết Anh.flac"],
-  [
-    "1U4THD6Nit0L83HUJeI4o33yOpKgZk6nl",
-    "07. Mắt Môi Tay Chân (feat. Tage).flac",
-  ],
-  ["1XQzIIkteRgxOVi0MIC57iONtDJAASRFY", "08. Đao Của Anh Vừa.flac"],
-  ["1Kuuq4zcDOM3dOw9bRpca-xuz2YPkF6tf", "09. Là Gì Của Nhau.flac"],
-  ["1iewpqjjkV-MCw3lAMqfsjITadOFU0Fai", "10. Night In Prague.flac"],
-  ["1B8ovUnhGjGn2oWQdmDyJW15xGvTi8AYF", "11. Một Cái Ôm.flac"],
-  ["1lwJ77xEBz3sW2_Q_pl2v7Y0plBLHXVZR", "12. Liệm.flac"],
-  [
-    "1reMXW2DQ2L7cBDBv8l4uLoZH4muvLFcH",
-    "13. Nếu Như Ta Chẳng Còn (feat. AAP Ướt Mi).flac",
-  ],
-  ["1HgFc6Iq9s5ItZN17AvjxwcVBmeOo50Vx", "14. Ai Mới Là Kẻ Xấu Xa.flac"],
-  ["1LRE3CvLiF1gxikWwhbHGNxR3rwPBul8C", "15. Slippery (feat. Tùng Dương).flac"],
-  ["1cWjcrQcRnX_BOykhrbiLiRiKHshqh5oE", "16. Intenpol.flac"],
-  ["10Sn7Vh5Hgf22DO-mqfkWxNZggFvDHcZl", "17. Tây Thi.flac"],
-  ["1YA8-K4yZNIUBCWIxob42PHNJLB8S_7ll", "18. Hút và Hút.flac"],
-  ["1oDLEyuU1VzSiOpIYvW0ZN8C6HEOYrUF7", "19. Dưa Chua.flac"],
-  ["1D-cedj0JdydUk_PZUOhQMwF3kJoyoO_V", "20. Xa Xôi (feat. Obito).flac"],
-  ["1XYcz8yfRsocHezKnxNN5ZyBrAaR6iJ5J", "21. Che Phủ.flac"],
-  ["1_EwdyYj0zzQ1GET39WDdSzUe7SHLkCUt", "22. Oanh M = Thuoc.flac"],
-  ["17qz4-zYF5Nua3Z1-7fnoz0x0n2ot5_Eo", "23. Ghet Xog Lai Thik.flac"],
-  ["1wLfTMctsfkLvBqsTt2Vobpwo4PglqY5N", "24. Nhìn Kẻ Thù Của Tao.flac"],
-  ["1YUJsyNer2Tp840LxryYfkr_ze_-KolQ2", "25. Envy (feat. THANHDRAW).flac"],
-  ["1_Wk2qmDPZEiMzI-J2g3ooT6tgfeJmZCj", "26. Cảm Ơn.flac"],
-  ["12l3zXy3uIQIMrkCYm_3RaWNdKtaHnEw7", "27. Không Cần Lo Cho Tao.flac"],
-  [
-    "1Lye7RRsmEaw6sG4stOTf5okjIuc_s-kY",
-    "28. Huh (feat. RPT Orijinn & THANHDRAW).flac",
-  ],
-  ["1_kZXWCfGs93M2hb0hL3b-JKxb0yXTEy4", "29. Nguyễn Văn Mười.flac"],
-  ["1yMjUyzfcbMWrExKlPkWSjQITrrIlqGhe", "30. Thịt Lợn.flac"],
-  ["1xok_TDmBCsbisujQ8klAvHA3kDA3WpgU", "IDK.mp4"],
-  ["1zJOPsHCIdgdnqg9yKn4eMK12XwruRXbc", "MẮT MÔI TAY CHÂN.mp4"],
-  ["1qfYDLZTITE1MZ4KTHvxvuFT_5Sf_9JxT", "SLIPPERY.mp4"],
-  ["1jsK7PkASKSDmkpuUJcrZ_SCmgQfYQLw9", "OANH MÀY = THUỐC.mp4"],
-  ["1dAEU4VGt05hqPhR5eRS-3VZfO0_zM3vT", "XA XÔI.mp4"],
-  ["15B29zvDUrzvvqEgmPuT9kErV3n4_KRXY", "NHÌN KẺ THÙ CỦA TAO.mp4"],
-];
-const media = raw.map(([id, file], i) => ({
-  id,
-  file,
-  type: file.endsWith(".mp4") ? "video" : "audio",
-  title: file.replace(/^\d+\.\s*/, "").replace(/\.(flac|mp4)$/i, ""),
-  url: DRIVE + id,
-  no: String(i + 1).padStart(2, "0"),
-}));
+let media = [];
+async function loadMedia() {
+  const response = await fetch("/media.json");
+  if (!response.ok) throw new Error("Không thể tải danh sách media");
+  const catalog = await response.json();
+  media = catalog.map(({ id, file }, i) => ({
+    id,
+    file,
+    type: file.toLowerCase().endsWith(".mp4") ? "video" : "audio",
+    title: file.replace(/^\\d+\\.\\s*/, "").replace(/\\.(flac|mp4)$/i, ""),
+    url: DRIVE + id,
+    no: String(i + 1).padStart(2, "0"),
+  }));
+  render();
+}
 const $ = (s) => document.querySelector(s),
   $$ = (s) => [...document.querySelectorAll(s)];
 const audio = $("#audio"),
@@ -111,7 +72,7 @@ function updateNow() {
   if (!current) return;
   $("#nowTitle").textContent = current.title;
   $("#nowMeta").textContent = "MCK · FLAC Lossless";
-  $("#favoriteNow").textContent = favorites.has(current.id) ? "♥" : "♡";
+  $("#favoriteNow").textContent = favorites.has(current.id) ? "â™¥" : "â™¡";
   document.body.classList.toggle("playing", !audio.paused);
   $("#play").innerHTML = audio.paused ? playSvg : pauseSvg;
   $("#play").setAttribute("aria-label", audio.paused ? "Phát" : "Tạm dừng");
@@ -220,7 +181,7 @@ audio.addEventListener("error", () => {
   const messages = {
     2: "Không tải được media. Kiểm tra kết nối mạng.",
     3: "Trình duyệt không giải mã được file FLAC này.",
-    4: "Nguồn media không khả dụng. Hãy chạy python server.py.",
+    4: "Nguồn media không khả dụng.",
   };
   toast(messages[audio.error?.code] || "Có lỗi khi phát nhạc.");
   updateNow();
@@ -273,4 +234,4 @@ document.addEventListener("keydown", (e) => {
     $("#play").click();
   }
 });
-render();
+loadMedia().catch((error) => toast(error.message));

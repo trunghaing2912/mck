@@ -4,9 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node --env-file-if-exists=.env.local server.mjs",
-    "start": "node --env-file-if-exists=.env.local server.mjs",
-    "check": "node --check app.js && node --check server.mjs && node --check api/media/[id].mjs"
+    "dev": "vercel dev",
+    "check": "node --check app.js && node --check api/media/[id].mjs"
   },
   "engines": {
     "node": ">=20"

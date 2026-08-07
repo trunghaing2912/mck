@@ -1,3 +1,6 @@
+/* ============================================================
+   1. BASE + MOBILE-FIRST LAYOUT
+   ============================================================ */
 :root {
   --bg: #f1efe9;
   --ink: #171714;
@@ -565,3 +568,246 @@ header:before {
     --player: 112px;
   }
 }
+
+
+/* ============================================================
+   2. ICONS, FIXED PLAYER, VIDEO STAGE + RESPONSIVE OVERRIDES
+   ============================================================ */
+.toast {
+  top: 82px;
+  bottom: auto;
+}
+.control-icon {
+  display: block;
+  width: 18px;
+  height: 18px;
+  margin: auto;
+  fill: currentColor;
+  stroke: none;
+  overflow: visible;
+  pointer-events: none;
+}
+.nav-icon {
+  display: block;
+  width: 19px;
+  height: 19px;
+  margin: auto;
+  fill: currentColor;
+  pointer-events: none;
+}
+.controls button,
+.card-play,
+.primary {
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.controls .play .control-icon {
+  width: 19px;
+  height: 19px;
+}
+.controls .play .play-icon {
+  transform: translateX(1px);
+}
+.primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+}
+.primary .control-icon {
+  width: 16px;
+  height: 16px;
+}
+.card-play .control-icon {
+  width: 16px;
+  height: 16px;
+}
+.library {
+  padding-bottom: 0;
+}
+body {
+  padding-bottom: 0;
+}
+.media-grid::after {
+  content: "";
+  display: block;
+  height: 66px;
+  flex: 0 0 66px;
+  grid-column: 1 / -1;
+  background: var(--ink);
+  margin-inline: -18px;
+}
+.sidebar,
+.player {
+  transition:
+    transform 0.28s cubic-bezier(0.22, 0.7, 0.3, 1),
+    opacity 0.22s ease;
+  will-change: transform;
+}
+.site-footer {
+  bottom: 0;
+}
+.player {
+  bottom: 66px;
+}
+.bars-hidden .player {
+  transform: translate(-50%, calc(100% + 66px));
+  opacity: 0;
+  pointer-events: none;
+}
+.video-stage {
+  position: sticky;
+  top: 70px;
+  z-index: 18;
+  background: #111;
+  padding: 12px;
+  border-bottom: 1px solid var(--ink);
+  scroll-margin-top: 70px;
+}
+.video-stage[hidden] {
+  display: none;
+}
+.video-frame {
+  max-width: 100%;
+  margin: auto;
+}
+.video-frame video {
+  display: block;
+  width: 100%;
+  max-height: 62vh;
+  aspect-ratio: 16/9;
+  object-fit: contain;
+  background: #000;
+}
+.video-actions {
+  min-height: 58px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 4px 0;
+  color: #fff;
+}
+.video-actions > div {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+  margin-right: auto;
+}
+.video-actions strong {
+  display: block;
+  max-width: 42vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font: 600 12px "Space Grotesk";
+}
+.video-actions .eyebrow {
+  color: var(--lime);
+}
+.video-action {
+  border: 1px solid #555;
+  background: #222;
+  color: #fff;
+  padding: 8px 10px;
+  font-size: 10px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.close-inline {
+  font-size: 18px;
+  line-height: 1;
+  padding: 6px 10px;
+}
+.video-action:hover {
+  border-color: var(--lime);
+  color: var(--lime);
+}
+@media (min-width: 1024px) {
+  body {
+    --player: 112px;
+  }
+  .toast {
+    top: 86px;
+    bottom: auto;
+  }
+  main {
+    width: min(calc(100% - 64px), 1180px);
+  }
+  header {
+    padding-inline: 34px;
+  }
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    min-height: 590px;
+    padding: 48px;
+  }
+  .hero-copy {
+    order: 1;
+  }
+  .hero-art {
+    order: 2;
+    height: 430px;
+  }
+  .disc {
+    width: 360px;
+    height: 360px;
+  }
+  .library {
+    padding: 54px 48px 0;
+  }
+  .media-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 32px;
+  }
+  .media-grid::after {
+    margin-inline: -48px;
+  }
+  .sidebar,
+  .player {
+    width: min(calc(100% - 64px), 1180px);
+  }
+  .video-stage {
+    padding: 18px 48px;
+  }
+  .video-frame {
+    max-width: 960px;
+  }
+  .video-frame video {
+    max-height: 68vh;
+  }
+  .video-actions strong {
+    max-width: 520px;
+  }
+  .search {
+    max-width: 380px;
+  }
+  .drive-link {
+    display: block;
+    color: var(--ink);
+    font-size: 11px;
+    text-decoration: none;
+  }
+  .player {
+    grid-template-columns: 1fr 1.3fr 0.7fr;
+  }
+  .volume {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+  }
+  .volume input {
+    width: 90px;
+    accent-color: var(--orange);
+  }
+  .quality {
+    font-size: 8px;
+    border-left: 1px solid var(--line);
+    padding-left: 10px;
+  }
+}
+
+
