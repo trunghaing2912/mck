@@ -50,9 +50,10 @@ function render() {
   grid.innerHTML = items
     .map(
       (m, i) =>
-        `<article class="card ${m.type}-card ${current?.id === m.id ? "active" : ""}" data-id="${m.id}"><div class="cover" data-no="${m.no}" style="--tone:${["#57261d", "#1d3c3b", "#34301a", "#3f1e37", "#253118"][i % 5]}"><button class="heart ${favorites.has(m.id) ? "on" : ""}" data-fav="${m.id}" aria-label="Yêu thích">${favorites.has(m.id) ? "♥" : "♡"}</button><span class="format">${m.type === "audio" ? "FLAC · LOSSLESS" : "MP4 · VIDEO"}</span><button class="card-play" aria-label="Phát">${playSvg}</button></div><h3>${m.title}</h3><p>MCK · ${m.type === "audio" ? "Lossless Audio" : "Official Visual"}</p></article>`,
+        `<article class="card ${m.type}-card ${current?.id === m.id ? "active" : ""}" data-id="${m.id}"><div class="cover" data-no="${m.no}" style="--tone:${["#273027", "#1b211c", "#343a32", "#202720", "#394139"][i % 5]}"><button class="heart ${favorites.has(m.id) ? "on" : ""}" data-fav="${m.id}" aria-label="Yêu thích">${favorites.has(m.id) ? "♥" : "♡"}</button><span class="format">${m.type === "audio" ? "FLAC · LOSSLESS" : "MP4 · VIDEO"}</span><button class="card-play" aria-label="Phát">${playSvg}</button></div><h3>${m.title}</h3><p>MCK · ${m.type === "audio" ? "Lossless Audio" : "Official Visual"}</p></article>`,
     )
     .join("");
+  $("#resultCount").textContent = `${items.length} ${items.length === 1 ? "tác phẩm" : "tác phẩm"}`;
   $("#empty").hidden = items.length > 0;
 }
 function playItem(m) {
@@ -234,4 +235,8 @@ document.addEventListener("keydown", (e) => {
     $("#play").click();
   }
 });
+grid.innerHTML = Array.from(
+  { length: 6 },
+  () => '<div class="track-skeleton" aria-hidden="true"><i></i><span></span><b></b></div>',
+).join("");
 loadMedia().catch((error) => toast(error.message));
