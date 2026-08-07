@@ -3,8 +3,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0b0b0c" />
+    <meta name="theme-color" content="#0b0d0c" />
     <title>MCK - Music & Visuals</title>
+    <script>
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem("mck-theme");
+          const preferredTheme = matchMedia("(prefers-color-scheme: light)").matches
+            ? "light"
+            : "dark";
+          document.documentElement.dataset.theme = savedTheme || preferredTheme;
+        } catch {
+          document.documentElement.dataset.theme = "dark";
+        }
+      })();
+    </script>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -32,6 +45,16 @@
           ><span>⌕</span
           ><input id="search" type="search" placeholder="Tìm bài hát, video..."
         /></label>
+        <button
+          id="themeToggle"
+          class="theme-toggle"
+          type="button"
+          aria-label="Chuyển giao diện"
+          aria-pressed="false"
+        >
+          <span class="theme-toggle-icon" aria-hidden="true">☼</span>
+          <span id="themeLabel" class="theme-toggle-label">Sáng</span>
+        </button>
         <a
           class="drive-link"
           href="https://drive.google.com/drive/folders/1ZOWvyl-HjtHA3LlJl7aQi1B0vhRkA-Q4"

@@ -50,7 +50,7 @@ function render() {
   grid.innerHTML = items
     .map(
       (m, i) =>
-        `<article class="card ${m.type}-card ${current?.id === m.id ? "active" : ""}" data-id="${m.id}"><div class="cover" data-no="${m.no}" style="--tone:${["#273027", "#1b211c", "#343a32", "#202720", "#394139"][i % 5]}"><button class="heart ${favorites.has(m.id) ? "on" : ""}" data-fav="${m.id}" aria-label="Yêu thích">${favorites.has(m.id) ? "♥" : "♡"}</button><span class="format">${m.type === "audio" ? "FLAC · LOSSLESS" : "MP4 · VIDEO"}</span><button class="card-play" aria-label="Phát">${playSvg}</button></div><h3>${m.title}</h3><p>MCK · ${m.type === "audio" ? "Lossless Audio" : "Official Visual"}</p></article>`,
+        `<article class="card ${m.type}-card ${current?.id === m.id ? "active" : ""}" data-id="${m.id}"><div class="cover" data-no="${m.no}" style="--tone:${["#273027", "#1b211c", "#343a32", "#202720", "#394139"][i % 5]}"><span class="format">${m.type === "audio" ? "FLAC · LOSSLESS" : "MP4 · VIDEO"}</span><button class="card-play" aria-label="Phát">${playSvg}</button></div><h3>${m.title}</h3><p>MCK · ${m.type === "audio" ? "Lossless Audio" : "Official Visual"}</p><button class="heart ${favorites.has(m.id) ? "on" : ""}" data-fav="${m.id}" aria-label="Yêu thích">${favorites.has(m.id) ? "♥" : "♡"}</button></article>`,
     )
     .join("");
   $("#resultCount").textContent = `${items.length} ${items.length === 1 ? "tác phẩm" : "tác phẩm"}`;
@@ -73,7 +73,7 @@ function updateNow() {
   if (!current) return;
   $("#nowTitle").textContent = current.title;
   $("#nowMeta").textContent = "MCK · FLAC Lossless";
-  $("#favoriteNow").textContent = favorites.has(current.id) ? "â™¥" : "â™¡";
+  $("#favoriteNow").textContent = favorites.has(current.id) ? "♥" : "♡";
   document.body.classList.toggle("playing", !audio.paused);
   $("#play").innerHTML = audio.paused ? playSvg : pauseSvg;
   $("#play").setAttribute("aria-label", audio.paused ? "Phát" : "Tạm dừng");
@@ -235,6 +235,31 @@ document.addEventListener("keydown", (e) => {
     $("#play").click();
   }
 });
+
+// Theme: follow the device on first visit, then remember the user's choice.
+const themeToggle = $("#themeToggle");
+const themeLabel = $("#themeLabel");
+function applyTheme(theme) {
+  const isDark = theme === "dark";
+  document.documentElement.dataset.theme = theme;
+  themeToggle.setAttribute("aria-pressed", String(isDark));
+  themeToggle.setAttribute(
+    "aria-label",
+    isDark ? "Chuyển sang giao diện sáng" : "Chuyển sang giao diện tối",
+  );
+  themeToggle.querySelector(".theme-toggle-icon").textContent = isDark ? "☼" : "☾";
+  themeLabel.textContent = isDark ? "Sáng" : "Tối";
+  document.querySelector('meta[name="theme-color"]').content = isDark
+    ? "#0b0d0c"
+    : "#eef1ec";
+}
+applyTheme(document.documentElement.dataset.theme || "dark");
+themeToggle.onclick = () => {
+  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+  applyTheme(nextTheme);
+  localStorage.setItem("mck-theme", nextTheme);
+};
+
 grid.innerHTML = Array.from(
   { length: 6 },
   () => '<div class="track-skeleton" aria-hidden="true"><i></i><span></span><b></b></div>',
