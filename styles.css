@@ -1203,3 +1203,308 @@ header::before {
   }
 }
 
+/* ============================================================
+   4. RESPONSIVE APP SHELL
+   Mobile keeps bottom navigation. Desktop uses a Spotify-inspired
+   library sidebar, card grid, and permanently visible bottom player.
+   ============================================================ */
+.desktop-sidebar {
+  display: none;
+}
+@media (min-width: 1024px) {
+  body {
+    min-width: 1024px;
+    padding: 0 0 96px 248px;
+    background: #080a09;
+  }
+  body::before {
+    display: none;
+  }
+  .desktop-sidebar {
+    position: fixed;
+    inset: 0 auto 96px 0;
+    z-index: 24;
+    display: flex;
+    width: 248px;
+    flex-direction: column;
+    padding: 24px 12px 18px;
+    border-right: 1px solid #202520;
+    color: var(--ink);
+    background: #090b0a;
+  }
+  .desktop-brand {
+    display: inline-block;
+    align-self: flex-start;
+    margin: 0 12px 28px;
+    color: var(--acid);
+    font: 900 28px/1 Arial Black, Arial, sans-serif;
+    letter-spacing: -0.11em;
+    text-decoration: none;
+  }
+  .desktop-nav {
+    display: grid;
+    gap: 4px;
+  }
+  .desktop-nav .nav-item {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    align-items: center;
+    justify-content: initial;
+    min-height: 46px;
+    padding: 0 14px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 700;
+    text-align: left;
+  }
+  .desktop-nav .nav-item span {
+    display: grid;
+    width: 22px;
+    place-items: center;
+    font-size: 19px;
+  }
+  .desktop-nav .nav-item.active {
+    color: var(--ink);
+    background: #202520;
+  }
+  .desktop-nav .nav-item.active span {
+    color: var(--acid);
+  }
+  .desktop-library-note {
+    display: grid;
+    gap: 8px;
+    margin: 28px 10px 0;
+    padding-top: 22px;
+    border-top: 1px solid #202520;
+  }
+  .desktop-library-note strong {
+    margin-bottom: 4px;
+    font-size: 13px;
+  }
+  .desktop-library-note span {
+    color: var(--muted);
+    font-size: 12px;
+  }
+  .desktop-drive {
+    margin: auto 10px 0;
+    color: var(--muted);
+    font-size: 11px;
+    text-decoration: none;
+  }
+  .desktop-drive:hover {
+    color: var(--ink);
+    text-decoration: underline;
+  }
+  .site-footer {
+    display: none;
+  }
+  main {
+    width: auto;
+    min-height: calc(100dvh - 96px);
+    margin: 0;
+    border: 0;
+    background: #101310;
+  }
+  header {
+    height: 64px;
+    padding: 0 28px;
+    background: rgb(16 19 16 / 0.96);
+  }
+  header::before {
+    display: none;
+  }
+  .search {
+    max-width: 420px;
+    margin: 0;
+    padding: 10px 14px;
+    border: 0;
+    border-radius: 999px;
+    background: #272c27;
+  }
+  .drive-link {
+    margin-left: auto;
+  }
+  .hero {
+    grid-template-columns: minmax(0, 1fr) 260px;
+    gap: 36px;
+    min-height: 350px;
+    padding: 40px 38px;
+    background: linear-gradient(135deg, #283226 0%, #171b17 56%, #101310 100%);
+  }
+  .hero::before {
+    display: none;
+  }
+  .hero-copy {
+    align-self: end;
+  }
+  .hero h1 {
+    max-width: 12ch;
+    font-size: clamp(52px, 6vw, 88px);
+    line-height: 0.92;
+  }
+  .hero-deck {
+    max-width: 54ch;
+    margin-top: 16px;
+  }
+  .primary {
+    margin-top: 22px;
+    border-radius: 999px;
+    padding: 13px 21px;
+  }
+  .hero-art {
+    align-self: center;
+    width: 240px;
+    height: 240px;
+    border: 0;
+    transform: none;
+    box-shadow: 0 26px 60px rgb(0 0 0 / 0.38);
+  }
+  .hero-art::before,
+  .hero-art::after {
+    display: none;
+  }
+  .disc {
+    width: 218px;
+    height: 218px;
+  }
+  .library {
+    padding: 30px 30px 0;
+  }
+  .section-head {
+    grid-template-columns: 1fr auto;
+    margin-bottom: 22px;
+  }
+  .section-head h2 {
+    font-size: 30px;
+  }
+  .tabs {
+    border: 0;
+    gap: 8px;
+  }
+  .tab {
+    border: 0;
+    border-radius: 999px;
+    background: #242924;
+  }
+  .media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(168px, 1fr));
+    gap: 18px;
+    background: transparent;
+  }
+  .media-grid::after {
+    display: none;
+  }
+  .card,
+  .card:nth-child(4n + 2) {
+    display: block;
+    min-width: 0;
+    min-height: 0;
+    padding: 12px;
+    border-radius: 8px;
+    background: #171b17;
+    transform: none;
+  }
+  .card:hover,
+  .card:focus-within {
+    background: #242924;
+  }
+  .cover,
+  .video-card .cover {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 6px;
+    box-shadow: 0 8px 24px rgb(0 0 0 / 0.3);
+  }
+  .video-card .cover {
+    aspect-ratio: 16 / 10;
+    margin-block: 10%;
+  }
+  .card h3 {
+    margin: 13px 2px 5px;
+    font-size: 14px;
+  }
+  .card p {
+    margin: 0 2px 4px;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+  .heart {
+    top: 18px;
+    right: 18px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: rgb(9 11 10 / 0.75);
+  }
+  .card-play {
+    position: absolute;
+    right: 20px;
+    top: auto;
+    bottom: 58px;
+    width: 42px;
+    height: 42px;
+    border: 0;
+    border-radius: 50%;
+    opacity: 0;
+    transform: translateY(7px);
+    transition: opacity 160ms ease, transform 160ms ease;
+  }
+  .card:hover .card-play,
+  .card.active .card-play,
+  .card:focus-within .card-play {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .format {
+    font-size: 7px;
+  }
+  .track-skeleton {
+    display: block;
+    min-height: 230px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #171b17;
+  }
+  .track-skeleton i {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1;
+    margin-bottom: 14px;
+  }
+  .track-skeleton span {
+    width: 78%;
+    margin-bottom: 8px;
+  }
+  .player {
+    inset: auto 0 0 0;
+    z-index: 50;
+    width: 100%;
+    height: 96px;
+    padding: 12px 20px;
+    grid-template-columns: minmax(230px, 1fr) minmax(360px, 1.4fr) minmax(180px, 1fr);
+    grid-template-rows: 1fr;
+    border: 0;
+    border-top: 1px solid #202520;
+    transform: none;
+  }
+  .bars-hidden .player {
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+  }
+  .transport {
+    align-self: center;
+  }
+  .volume {
+    display: flex;
+  }
+  .toast {
+    left: calc(50% + 124px);
+  }
+  .video-stage {
+    top: 64px;
+  }
+}
