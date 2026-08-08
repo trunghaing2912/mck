@@ -3,15 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0b0d0c" />
-    <title>MCK - Music & Visuals</title>
+    <meta name="theme-color" content="#11110f" />
+    <meta name="description" content="Nghe album HVL của MCK ở định dạng FLAC lossless và xem các visual chính thức." />
+    <title>MCK / HVL - Music & Visuals</title>
     <script>
       (() => {
         try {
           const savedTheme = localStorage.getItem("mck-theme");
-          const preferredTheme = matchMedia("(prefers-color-scheme: light)").matches
-            ? "light"
-            : "dark";
+          const preferredTheme = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
           document.documentElement.dataset.theme = savedTheme || preferredTheme;
         } catch {
           document.documentElement.dataset.theme = "dark";
@@ -21,73 +20,65 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="ambient ambient-a"></div>
-    <div class="ambient ambient-b"></div>
+    <div class="grain" aria-hidden="true"></div>
     <aside class="desktop-sidebar" aria-label="Điều hướng desktop">
-      <a class="desktop-brand" href="#" aria-label="MCK Music">MCK</a>
-      <nav class="desktop-nav">
-        <button class="nav-item active" data-view="all"><span>⌂</span> Khám phá</button>
-        <button class="nav-item" data-view="audio"><span>♫</span> Âm nhạc</button>
-        <button class="nav-item" data-view="video"><span><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg></span> Video</button>
-        <button class="nav-item" data-view="favorite"><span>♡</span> Yêu thích</button>
+      <a class="desktop-brand" href="#top" aria-label="MCK Music">
+        <span>M</span><span>C</span><span>K</span>
+      </a>
+      <nav class="desktop-nav" aria-label="Thư viện">
+        <button class="nav-item active" data-view="all"><span>01</span> Khám phá</button>
+        <button class="nav-item" data-view="audio"><span>02</span> Âm nhạc</button>
+        <button class="nav-item" data-view="video"><span>03</span> Video</button>
+        <button class="nav-item" data-view="favorite"><span>04</span> Yêu thích</button>
       </nav>
       <div class="desktop-library-note">
-        <strong>Thư viện của bạn</strong>
-        <span>30 bài FLAC</span>
-        <span>6 music videos</span>
+        <span>HVL ARCHIVE</span>
+        <strong>Âm thanh nguyên bản.<br />Không thỏa hiệp.</strong>
       </div>
-      <a class="desktop-drive" href="https://drive.google.com/drive/folders/1ZOWvyl-HjtHA3LlJl7aQi1B0vhRkA-Q4" target="_blank" rel="noreferrer">Mở Google Drive</a>
+      <a class="desktop-drive" href="https://drive.google.com/drive/folders/1ZOWvyl-HjtHA3LlJl7aQi1B0vhRkA-Q4" target="_blank" rel="noreferrer">Mở kho lưu trữ <span>↗</span></a>
     </aside>
-    <main>
-      <header>
-        <button class="menu-btn" aria-label="Mở menu">☰</button>
-        <label class="search"
-          ><span>⌕</span
-          ><input id="search" type="search" placeholder="Tìm bài hát, video..."
-        /></label>
-        <button
-          id="themeToggle"
-          class="theme-toggle"
-          type="button"
-          aria-label="Chuyển giao diện"
-          aria-pressed="false"
-        >
+
+    <main id="top">
+      <header class="topbar">
+        <button class="menu-btn" type="button" aria-label="Mở menu">MENU</button>
+        <label class="search">
+          <span aria-hidden="true">⌕</span>
+          <input id="search" type="search" placeholder="Tìm trong HVL" />
+        </label>
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Chuyển giao diện" aria-pressed="false">
           <span class="theme-toggle-icon" aria-hidden="true">☼</span>
           <span id="themeLabel" class="theme-toggle-label">Sáng</span>
         </button>
-        <a
-          class="drive-link"
-          href="https://drive.google.com/drive/folders/1ZOWvyl-HjtHA3LlJl7aQi1B0vhRkA-Q4"
-          target="_blank"
-          rel="noreferrer"
-          >Google Drive ↗</a
-        >
+        <a class="drive-link" href="https://drive.google.com/drive/folders/1ZOWvyl-HjtHA3LlJl7aQi1B0vhRkA-Q4" target="_blank" rel="noreferrer">DRIVE ↗</a>
       </header>
 
       <section id="videoStage" class="video-stage" hidden>
         <div class="video-frame">
           <video id="video" controls playsinline></video>
           <div class="video-actions">
-            <div><span class="eyebrow">NOW PLAYING</span><strong id="videoTitle"></strong></div>
-            <button id="fullscreenVideo" class="video-action" type="button">⛶ Toàn màn hình</button>
+            <div><span class="eyebrow">ĐANG PHÁT</span><strong id="videoTitle"></strong></div>
+            <button id="fullscreenVideo" class="video-action" type="button">Toàn màn hình</button>
             <button id="closeVideo" class="video-action close-inline" type="button" aria-label="Đóng video">×</button>
           </div>
         </div>
       </section>
 
-      <section class="hero">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-art" aria-hidden="true">
+          <img src="assets/mck-signal-art.jpg" alt="" width="1536" height="1536" fetchpriority="high" />
+          <div class="hero-art-code">HVL</div>
+        </div>
         <div class="hero-copy">
-          <h1>Album HVL - MCK</h1>
-          <p class="hero-deck">Lossless audio và visual nguyên bản, tập trung trong một trải nghiệm.</p>
-          <button id="playFeatured" class="primary">
-            <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
+          <span class="hero-kicker">MCK PRESENTS</span>
+          <h1 id="hero-title">HVL<br /><em>đang sống.</em></h1>
+          <p class="hero-deck">Lossless audio và visual nguyên bản trong một trải nghiệm không có tiếng ồn thừa.</p>
+          <button id="playFeatured" class="primary" type="button">
+            <span class="primary-icon" aria-hidden="true">▶</span>
             <span>Phát từ đầu</span>
           </button>
         </div>
-        <div class="hero-art">
-          <div class="disc">
-            <div class="disc-label">MCK<br /><small>HVL</small></div>
-          </div>
+        <div class="signal" aria-hidden="true">
+          <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
         </div>
       </section>
 
@@ -97,83 +88,57 @@
             <h2 id="sectionTitle">Tất cả tác phẩm</h2>
             <span id="resultCount" class="collection-count">Đang tải thư viện</span>
           </div>
-          <div class="tabs">
-            <button class="tab active" data-view="all">Tất cả</button
-            ><button class="tab" data-view="audio">Nhạc</button
-            ><button class="tab" data-view="video">Video</button>
+          <div class="tabs" aria-label="Lọc tác phẩm">
+            <button class="tab active" data-view="all">Tất cả</button>
+            <button class="tab" data-view="audio">Nhạc</button>
+            <button class="tab" data-view="video">Video</button>
           </div>
         </div>
         <div id="mediaGrid" class="media-grid" aria-live="polite"></div>
-        <div id="empty" class="empty" hidden>
-          Không tìm thấy tác phẩm phù hợp.
-        </div>
+        <div id="empty" class="empty" hidden>Không tìm thấy tác phẩm phù hợp.</div>
       </section>
     </main>
 
-    <footer class="player">
+    <footer class="player" aria-label="Trình phát nhạc">
       <div class="now">
-        <div class="mini-cover"><span>99</span></div>
-        <div>
-          <strong id="nowTitle">Chọn một bài hát</strong
-          ><small id="nowMeta">MCK · FLAC Lossless</small>
+        <div class="mini-cover" aria-hidden="true"><span>HVL</span></div>
+        <div class="now-copy">
+          <strong id="nowTitle">Chọn một bài hát</strong>
+          <small id="nowMeta">MCK / FLAC Lossless</small>
         </div>
-        <button id="favoriteNow" class="icon-btn" aria-label="Yêu thích">
-          ♡
-        </button>
+        <button id="favoriteNow" class="icon-btn" type="button" aria-label="Yêu thích">♡</button>
       </div>
       <div class="transport">
         <div class="controls">
-          <button id="shuffle" aria-label="Trộn">⌘</button
-          ><button id="prev" aria-label="Bài trước" title="Bài trước">
-            <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 5v14M19 5 8 12l11 7V5Z" /></svg>
-          </button
-          ><button id="play" class="play" aria-label="Phát" title="Phát">
-            <svg class="control-icon play-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg>
-          </button
-          ><button id="next" aria-label="Bài sau" title="Bài sau">
-            <svg class="control-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M18 5v14M5 5l11 7-11 7V5Z" /></svg>
-          </button
-          ><button id="repeat" aria-label="Lặp">↻</button>
+          <button id="shuffle" type="button" aria-label="Trộn">⌘</button>
+          <button id="prev" type="button" aria-label="Bài trước" title="Bài trước">◀</button>
+          <button id="play" class="play" type="button" aria-label="Phát" title="Phát">▶</button>
+          <button id="next" type="button" aria-label="Bài sau" title="Bài sau">▶</button>
+          <button id="repeat" type="button" aria-label="Lặp">↻</button>
         </div>
         <div class="timeline">
-          <span id="currentTime">0:00</span
-          ><input id="seek" type="range" min="0" max="100" value="0" /><span
-            id="duration"
-            >0:00</span
-          >
+          <span id="currentTime">0:00</span>
+          <input id="seek" type="range" min="0" max="100" value="0" aria-label="Tiến độ phát" />
+          <span id="duration">0:00</span>
         </div>
       </div>
       <div class="volume">
-        <span>♬</span
-        ><input
-          id="volume"
-          type="range"
-          min="0"
-          max="1"
-          step="0.01"
-          value="0.8"
-        /><span class="quality">FLAC<br /><b>LOSSLESS</b></span>
+        <span aria-hidden="true">VOL</span>
+        <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8" aria-label="Âm lượng" />
+        <span class="quality">FLAC<strong>LOSSLESS</strong></span>
       </div>
       <audio id="audio" preload="metadata"></audio>
     </footer>
+
     <footer class="sidebar site-footer" aria-label="Điều hướng chính">
       <nav>
-        <button class="nav-item active" data-view="all">
-          <span>⌂</span> Khám phá
-        </button>
-        <button class="nav-item" data-view="audio">
-          <span>♫</span> Âm nhạc
-        </button>
-        <button class="nav-item" data-view="video">
-          <span><svg class="nav-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="m8 5 11 7-11 7V5Z" /></svg></span>
-          Video
-        </button>
-        <button class="nav-item" data-view="favorite">
-          <span>♡</span> Yêu thích
-        </button>
+        <button class="nav-item active" data-view="all"><span>01</span> Khám phá</button>
+        <button class="nav-item" data-view="audio"><span>02</span> Âm nhạc</button>
+        <button class="nav-item" data-view="video"><span>03</span> Video</button>
+        <button class="nav-item" data-view="favorite"><span>04</span> Yêu thích</button>
       </nav>
     </footer>
-    <div id="toast" class="toast"></div>
+    <div id="toast" class="toast" role="status" aria-live="polite"></div>
     <script src="app.js"></script>
   </body>
 </html>
