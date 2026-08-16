@@ -16,8 +16,10 @@ const r2 = credentials.accessKeyId && credentials.secretAccessKey
 
 export const config = { supportsResponseStreaming: true };
 
+const bucketPath = `/${encodeURIComponent(bucket)}`;
+const bucketUrl = endpoint?.endsWith(bucketPath) ? endpoint : `${endpoint}${bucketPath}`;
 const objectUrl = (file) =>
-  `${endpoint}/${encodeURIComponent(bucket)}/${file.split("/").map(encodeURIComponent).join("/")}`;
+  `${bucketUrl}/${file.split("/").map(encodeURIComponent).join("/")}`;
 
 export default async function handler(req, res) {
   if (!["GET", "HEAD"].includes(req.method)) {
@@ -51,15 +53,13 @@ export default async function handler(req, res) {
       const value = upstream.headers.get(name);
       if (value) res.setHeader(name, value);
     }
-    res.setHeader(
-      "Content-Type",
-      item.file.toLowerCase().endsWith(".mp4") ? "video/mp4" : "audio/flac",
-    );
+    res.setHeader("Content-Type", upstream.ok
+      ? item.file.toLowerCase().endsWith(".mp4") ? "video/mp4" : "audio/flac"
+      : upstream.headers.get("content-type") || "text/plain");
     res.setHeader("Access-Control-Allow-Origin", "*");
-    res.setHeader(
-      "Cache-Control",
-      `public, s-maxage=${cacheSeconds}, max-age=${cacheSeconds}`,
-    );
+    res.setHeader("Cache-Control", upstream.ok
+      ? `public, s-maxage=${cacheSeconds}, max-age=${cacheSeconds}`
+      : "no-store");
     res.status(upstream.status);
     if (req.method === "HEAD" || !upstream.body) return res.end();
     Readable.fromWeb(upstream.body)

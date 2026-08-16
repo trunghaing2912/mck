@@ -3,7 +3,7 @@ import { once } from "node:events";
 import { Writable } from "node:stream";
 import test from "node:test";
 
-process.env.R2_ENDPOINT = "https://example.r2.cloudflarestorage.com";
+process.env.R2_ENDPOINT = "https://example.r2.cloudflarestorage.com/mck";
 process.env.R2_BUCKET = "mck";
 process.env.R2_ACCESS_KEY_ID = "test-access-key";
 process.env.R2_SECRET_ACCESS_KEY = "test-secret-key";
