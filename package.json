@@ -5,9 +5,12 @@
   "type": "module",
   "scripts": {
     "dev": "vercel dev",
-    "check": "node --check app.js && node --check api/media/[id].mjs"
+    "check": "node --check app.js && node --check api/media/[id].mjs && node --test"
   },
   "engines": {
     "node": ">=20"
+  },
+  "dependencies": {
+    "aws4fetch": "^1.0.20"
   }
 }

@@ -1,51 +1,60 @@
-
 import { Readable } from "node:stream";
+import { AwsClient } from "aws4fetch";
 import mediaCatalog from "../../media.json" with { type: "json" };
 
-// Catalog IDs come from the same JSON consumed by the frontend.
-const extraIds = (process.env.EXTRA_MEDIA_IDS || "")
-  .split(",")
-  .map((v) => v.trim())
-  .filter(Boolean);
-const allowedIds = new Set([...mediaCatalog.map((item) => item.id), ...extraIds]);
-const origin = (
-  process.env.GOOGLE_DRIVE_DOWNLOAD_ORIGIN ||
-  "https://drive.usercontent.google.com"
-).replace(/\/$/, "");
-const cacheSeconds = Number.parseInt(
-  process.env.MEDIA_CACHE_SECONDS || "3600",
-  10,
-);
+const mediaById = new Map(mediaCatalog.map((item) => [item.id, item]));
+const endpoint = process.env.R2_ENDPOINT?.replace(/\/$/, "");
+const bucket = process.env.R2_BUCKET || "mck";
+const cacheSeconds = Number.parseInt(process.env.MEDIA_CACHE_SECONDS || "3600", 10);
+const credentials = {
+  accessKeyId: process.env.R2_ACCESS_KEY_ID,
+  secretAccessKey: process.env.R2_SECRET_ACCESS_KEY,
+};
+const r2 = credentials.accessKeyId && credentials.secretAccessKey
+  ? new AwsClient({ ...credentials, region: "auto", service: "s3" })
+  : null;
 
 export const config = { supportsResponseStreaming: true };
+
+const objectUrl = (file) =>
+  `${endpoint}/${encodeURIComponent(bucket)}/${file.split("/").map(encodeURIComponent).join("/")}`;
 
 export default async function handler(req, res) {
   if (!["GET", "HEAD"].includes(req.method)) {
     res.setHeader("Allow", "GET, HEAD");
     return res.status(405).end("Method not allowed");
   }
+
   const id = Array.isArray(req.query.id) ? req.query.id[0] : req.query.id;
-  if (!allowedIds.has(id)) return res.status(404).end("Unknown media");
+  const item = mediaById.get(id);
+  if (!item) return res.status(404).end("Unknown media");
+  if (!endpoint || !r2) return res.status(500).end("R2 is not configured");
 
   try {
-    const headers = { "user-agent": "Mozilla/5.0 MCK-Vercel-Player/1.0" };
-    if (req.headers.range) headers.range = req.headers.range;
-    const upstream = await fetch(
-      `${origin}/download?export=download&confirm=t&id=${encodeURIComponent(id)}`,
-      { headers, redirect: "follow" },
-    );
+    const headers = {};
+    for (const name of ["range", "if-range", "if-none-match", "if-modified-since"]) {
+      if (req.headers[name]) headers[name] = req.headers[name];
+    }
+
+    const upstream = await r2.fetch(objectUrl(item.file), {
+      method: req.method,
+      headers,
+    });
+
     for (const name of [
-      "content-type",
       "content-length",
       "content-range",
       "accept-ranges",
-      "content-disposition",
       "last-modified",
       "etag",
     ]) {
       const value = upstream.headers.get(name);
       if (value) res.setHeader(name, value);
     }
+    res.setHeader(
+      "Content-Type",
+      item.file.toLowerCase().endsWith(".mp4") ? "video/mp4" : "audio/flac",
+    );
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader(
       "Cache-Control",
@@ -56,8 +65,8 @@ export default async function handler(req, res) {
     Readable.fromWeb(upstream.body)
       .on("error", () => res.destroy())
       .pipe(res);
-  } catch {
-    res.status(502).end("Cannot connect to Google Drive");
+  } catch (error) {
+    console.error("R2 media proxy failed", error);
+    res.status(502).end("Cannot connect to R2");
   }
 }
-
